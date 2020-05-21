@@ -73,3 +73,17 @@ class Player {
     return nextCard;
   }
 }
+
+class Game {
+  deck: Deck;
+  players: Player[] = [];
+
+  constructor(numPlayers: number) {
+    this.deck = make52();
+
+    for (var num = 0; num < numPlayers; num++) {
+      const cards = this.deck.splice(0, Math.ceil(52 / numPlayers));
+      this.players.push(new Player(cards));
+    }
+  }
+}

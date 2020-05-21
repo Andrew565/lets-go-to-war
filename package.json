@@ -1,0 +1,18 @@
+{
+  "name": "lets-go-to-war",
+  "version": "1.0.0",
+  "description": "Simulator for the card game 'War'",
+  "main": "declare-war.js",
+  "repository": "git@github.com:Andrew565/lets-go-to-war.git",
+  "author": "Andrew Steele <andrew565@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^3.0.0",
+    "@typescript-eslint/parser": "^3.0.0",
+    "eslint": "^7.0.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.3",
+    "prettier": "^2.0.5"
+  }
+}

@@ -28,18 +28,14 @@ class Game {
         return this.players.filter((player) => player.totalCards > 0);
     }
     goToWar() {
-        console.log("goToWar called");
-        let turnCount = 1;
         while (!this.gameOver) {
-            console.log("Turn #", ++turnCount);
             this.rule();
             this.gameOver = this.checkForWinner();
         }
         if (this.winningId)
-            console.log("The winner is:", this.players[this.winningId]);
+            console.info("The winner is: #", this.players[this.winningId].id);
     }
 }
 exports.Game = Game;
-console.log("Starting Basic War");
 const game = new Game(Rules_1.BasicWarRule, 2);
 game.goToWar();

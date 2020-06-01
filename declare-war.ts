@@ -35,18 +35,14 @@ export class Game {
   };
 
   goToWar() {
-    console.log("goToWar called");
-    let turnCount = 1;
     while (!this.gameOver) {
-      console.log("Turn #", ++turnCount);
       this.rule();
       this.gameOver = this.checkForWinner();
     }
 
-    if (this.winningId) console.log("The winner is:", this.players[this.winningId]);
+    if (this.winningId) console.info("The winner is: #", this.players[this.winningId].id);
   }
 }
 
-console.log("Starting Basic War");
 const game = new Game(BasicWarRule, 2);
 game.goToWar();

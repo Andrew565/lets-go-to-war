@@ -1,57 +1,45 @@
-var CardRankToName = {
-    0: "Two",
-    1: "Three",
-    2: "Four",
-    3: "Five",
-    4: "Six",
-    5: "Seven",
-    6: "Eight",
-    7: "Nine",
-    8: "Ten",
-    9: "Jack",
-    10: "Queen",
-    11: "King",
-    12: "Ace"
-};
-var Suits = ["Clubs", "Hearts", "Spades", "Diamonds"];
-function make52() {
-    var newDeck = [];
-    for (var suit = 0; suit < 4; suit++) {
-        for (var i = 0; i < 13; i++) {
-            newDeck.push({ rank: i, name: CardRankToName[i], suit: Suits[suit] });
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Game = void 0;
+const Player_1 = require("./Player");
+const helpers_1 = require("./helpers");
+const Rules_1 = require("./Rules");
+class Game {
+    constructor(rule, numPlayers) {
+        this.players = [];
+        this.gameOver = false;
+        this.round = 1;
+        this.winningId = undefined;
+        this.checkForWinner = () => {
+            if (this.activePlayers.length === 1) {
+                this.winningId = this.activePlayers[0].id;
+                return true;
+            }
+            return false;
+        };
+        this.deck = helpers_1.make52();
+        for (var num = 0; num < numPlayers; num++) {
+            const cards = this.deck.splice(0, Math.ceil(52 / numPlayers));
+            this.players.push(new Player_1.Player(cards));
         }
+        this.rule = rule.bind(this);
     }
-    return shuffle(newDeck);
+    get activePlayers() {
+        return this.players.filter((player) => player.totalCards > 0);
+    }
+    goToWar() {
+        console.log("goToWar called");
+        let turnCount = 1;
+        while (!this.gameOver) {
+            console.log("Turn #", ++turnCount);
+            this.rule();
+            this.gameOver = this.checkForWinner();
+        }
+        if (this.winningId)
+            console.log("The winner is:", this.players[this.winningId]);
+    }
 }
-console.log(make52());
-function shuffle(deck) {
-    for (var i = 0; i < 1000; i++) {
-        var location1 = Math.floor(Math.random() * deck.length);
-        var location2 = Math.floor(Math.random() * deck.length);
-        var tmp = deck[location1];
-        deck[location1] = deck[location2];
-        deck[location2] = tmp;
-    }
-    return deck;
-}
-var Player = /** @class */ (function () {
-    function Player(cards) {
-        this.deck = cards;
-    }
-    Object.defineProperty(Player.prototype, "nextCard", {
-        get: function () {
-            return this.deck.length ? this.deck.shift() : this.shuffleCards();
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Player.prototype.shuffleCards = function () {
-        if (this.usedCards.length === 0)
-            return null;
-        var nextCard = shuffle(this.usedCards).shift();
-        this.deck = this.usedCards;
-        this.usedCards = [];
-        return nextCard;
-    };
-    return Player;
-}());
+exports.Game = Game;
+console.log("Starting Basic War");
+const game = new Game(Rules_1.BasicWarRule, 2);
+game.goToWar();

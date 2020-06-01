@@ -1,23 +1,23 @@
-import { Card } from "./types";
+import { Card, Suit } from "./types";
 
-export class PlayerCard {
-  card: Card;
+export class PlayerCard implements Card {
+  rank: number;
+  name: string;
+  suit: Suit;
   playerId: number;
 
   constructor(card: Card, playerId: number) {
-    this.card = card;
+    this.rank = card.rank;
+    this.name = card.name;
+    this.suit = card.suit;
     this.playerId = playerId;
   }
 
-  get rank(): number {
-    return this.card.rank;
-  }
-
   get cardName(): string {
-    return `The ${this.card.name}`;
+    return `The ${this.name} of ${this.suit}`;
   }
 
-  giveTo(playerId: number) {
+  reassignTo(playerId: number) {
     this.playerId = playerId;
   }
 }

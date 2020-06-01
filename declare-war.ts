@@ -1,6 +1,7 @@
 import { Rule, Card } from "./types";
 import { Player } from "./Player";
 import { make52 } from "./helpers";
+import { BasicWarRule } from "./Rules";
 
 export class Game {
   deck: Card[];
@@ -34,7 +35,10 @@ export class Game {
   };
 
   goToWar() {
+    console.log("goToWar called");
+    let turnCount = 1;
     while (!this.gameOver) {
+      console.log("Turn #", ++turnCount);
       this.rule();
       this.gameOver = this.checkForWinner();
     }
@@ -42,3 +46,7 @@ export class Game {
     if (this.winningId) console.log("The winner is:", this.players[this.winningId]);
   }
 }
+
+console.log("Starting Basic War");
+const game = new Game(BasicWarRule, 2);
+game.goToWar();

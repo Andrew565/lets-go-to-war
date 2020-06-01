@@ -1,59 +1,84 @@
 import { Game } from "./declare-war";
+import { Player } from "./Player";
 import { PlayerCard } from "./PlayerCard";
 
-function getWarCards(activePlayers: import("/Users/andrewsteele/Projects/Personal/lets-go-to-war/Player").Player[]) {
-  return () =>
-    activePlayers.reduce((pot, player) => {
-      const card = player.nextCard;
+function getWarCards(activePlayers: Player[]) {
+  console.log("getWarCards called with: ", activePlayers);
+  return activePlayers.reduce((pot, player) => {
+    const card = player.nextCard;
+    console.log("card:", card);
 
-      if (card) {
-        pot.push(new PlayerCard(card, player.id));
-      } else {
-        player.out = true;
-      }
+    if (card) {
+      pot.push(new PlayerCard(card, player.id));
+    } else {
+      player.out = true;
+    }
 
-      return pot;
-    }, [] as PlayerCard[]);
+    return pot;
+  }, [] as PlayerCard[]);
 }
 
 export function BasicWarRule(this: Game) {
+  console.log("BasicWarRule called");
   const activePlayers = this.activePlayers;
   const cardPot: PlayerCard[] = [];
-
-  const warCards = getWarCards(activePlayers);
 
   let winners = [] as PlayerCard[];
 
   while (winners.length !== 1) {
-    const warringCards = warCards();
+    const warringCards = getWarCards(activePlayers);
+    console.log("warringCards:", warringCards);
     cardPot.push(...warringCards);
-    winners = BasicWarShowdown(warringCards);
+
+    winners = BasicWarShowdown2(warringCards);
+    console.log("BasicWar round winners:", winners);
+
     if (winners.length > 1) {
+      console.log("War will be declared");
       const moreCards = this.activePlayers.reduce((pot, player) => {
         const nextThree: PlayerCard[] = player.getThree().map((card) => new PlayerCard(card, player.id));
         pot.push(...nextThree);
         return pot;
       }, [] as PlayerCard[]);
       cardPot.push(...moreCards);
+
       console.log("Declaring WAR");
+    }
+
+    if (winners.length < 1) {
+      console.log("Something went wrong in Basic War");
     }
   }
 
-  cardPot.forEach((card) => card.giveTo(winners[0].playerId));
+  console.log("Number of cards per player before reassignment:");
+  this.activePlayers.forEach((player) => console.log(`Player id: ${player.id}, cards: ${player.deck.length}`));
+
+  cardPot.forEach((card) => card.reassignTo(winners[0].playerId));
+  console.log("Number of cards per player after reassignment:");
+  this.activePlayers.forEach((player) => console.log(`Player id: ${player.id}, cards: ${player.deck.length}`));
+
   const winningPlayer = this.activePlayers.find((player) => player.id === winners[0].playerId);
+  console.log("Winning Player:", winningPlayer);
   winningPlayer?.usedCards.push(...cardPot);
 }
 
-const BasicWarShowdown = (cardPot: PlayerCard[]) =>
-  cardPot.reduce((highCards: PlayerCard[], playerCard): PlayerCard[] => {
-    const { rank: playerRank } = playerCard;
-    const { rank: highRank } = highCards[0];
+const BasicWarShowdown2 = (showdownCards: PlayerCard[]) => {
+  console.log("BasicWarShowdown2 called with:", showdownCards);
 
-    if (playerRank > highRank) {
-      highCards = [playerCard];
-    } else if (playerRank === highRank) {
-      highCards.push(playerCard);
+  let winners: PlayerCard[] = [];
+  showdownCards.forEach((card) => {
+    console.log("winners at start of round:", winners);
+
+    if (!winners[0]) {
+      winners.push(card);
+    } else if (card.rank > winners[0].rank) {
+      winners = [card];
+    } else if (card.rank === winners[0].rank) {
+      winners.push(card);
     }
 
-    return highCards;
-  }, [] as PlayerCard[]);
+    console.log("winners at end of round:", winners);
+  });
+
+  return winners;
+};

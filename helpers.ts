@@ -1,4 +1,5 @@
 import { CardRankToName, Suits, Card } from "./types";
+import { PlayerCard } from "./PlayerCard";
 
 export function make52(): Card[] {
   const newDeck: Card[] = [];
@@ -7,6 +8,7 @@ export function make52(): Card[] {
       newDeck.push({ rank: i, name: CardRankToName[i], suit: Suits[suit] });
     }
   }
+
   return shuffle(newDeck);
 }
 
@@ -19,4 +21,8 @@ export function shuffle(deck: Card[]) {
     deck[location2] = tmp;
   }
   return deck;
+}
+
+export function makePlayerCards(cards: Card[], playerId: number) {
+  return cards.map((card) => new PlayerCard(card, playerId));
 }

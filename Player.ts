@@ -1,18 +1,17 @@
 import { Card, Deck } from "./types";
-import { shuffle } from "./helpers";
+import { makePlayerCards, shuffle } from "./helpers";
 
 let nextPlayerId = 0;
 
 export class Player {
   id: number;
   deck: Deck;
-  usedCards: Deck;
+  usedCards: Deck = [];
   out: boolean = false;
 
   constructor(cards: Card[]) {
     this.id = nextPlayerId++;
-    this.deck = cards;
-    this.usedCards = [];
+    this.deck = makePlayerCards(cards, this.id);
   }
 
   get nextCard(): Card | undefined {

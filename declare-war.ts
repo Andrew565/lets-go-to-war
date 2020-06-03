@@ -40,5 +40,6 @@ export class Game {
     }
 
     if (this.winningId) console.log("The winner is:", this.players[this.winningId]);
+    console.log('Players remaining cards: ', Players remaining cards: )
   }
 }

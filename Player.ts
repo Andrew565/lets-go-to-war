@@ -1,12 +1,12 @@
-import { Card, Deck } from "./types";
+import { Card } from "./types";
 import { shuffle } from "./helpers";
 
 let nextPlayerId = 0;
 
 export class Player {
   id: number;
-  deck: Deck;
-  usedCards: Deck;
+  deck: Card[];
+  usedCards: Card[];
   out: boolean = false;
 
   constructor(cards: Card[]) {

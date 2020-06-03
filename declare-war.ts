@@ -10,6 +10,9 @@ export class Game {
   gameOver: boolean = false;
   round: number = 1;
   winningId: number | undefined = undefined;
+  stats: StatisticsObject = {
+
+  };
 
   constructor(rule: Rule, numPlayers: number) {
     this.deck = make52();
@@ -43,7 +46,7 @@ export class Game {
     if (this.winningId) {
       console.info("The winner is: #", this.players[this.winningId].id);
 
-      console.log("Players remaining cards: ", this.players[this.winningId].totalCards);
+      console.log("Player's remaining cards: ", this.players[this.winningId].totalCards);
     }
   }
 }

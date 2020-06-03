@@ -32,8 +32,10 @@ class Game {
             this.rule();
             this.gameOver = this.checkForWinner();
         }
-        if (this.winningId)
+        if (this.winningId) {
             console.info("The winner is: #", this.players[this.winningId].id);
+            console.log("Players remaining cards: ", this.players[this.winningId].totalCards);
+        }
     }
 }
 exports.Game = Game;

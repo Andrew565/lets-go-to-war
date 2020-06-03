@@ -1,4 +1,4 @@
-import { Rule, Card } from "./types";
+import { Rule, Card, StatisticsObject } from "./types";
 import { Player } from "./Player";
 import { make52 } from "./helpers";
 import { BasicWarRule } from "./Rules";
@@ -11,7 +11,9 @@ export class Game {
   round: number = 1;
   winningId: number | undefined = undefined;
   stats: StatisticsObject = {
-
+    turns: 0,
+    numberOfWars: 0,
+    warsWonByPlayer: [],
   };
 
   constructor(rule: Rule, numPlayers: number) {
@@ -39,6 +41,7 @@ export class Game {
 
   goToWar() {
     while (!this.gameOver) {
+      this.stats.turns++;
       this.rule();
       this.gameOver = this.checkForWinner();
     }

@@ -28,3 +28,9 @@ export const Suits: Suit[] = ["Clubs", "Hearts", "Spades", "Diamonds"];
 export type Deck = PlayerCard[];
 
 export type Rule = () => void;
+
+export interface StatisticsObject {
+  turns: number;
+  numberOfWars: number;
+  warsWonByPlayer: { wins: number; playerId: number }[];
+}

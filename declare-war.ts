@@ -40,7 +40,11 @@ export class Game {
       this.gameOver = this.checkForWinner();
     }
 
-    if (this.winningId) console.info("The winner is: #", this.players[this.winningId].id);
+    if (this.winningId) {
+      console.info("The winner is: #", this.players[this.winningId].id);
+
+      console.log("Players remaining cards: ", this.players[this.winningId].totalCards);
+    }
   }
 }
 

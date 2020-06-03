@@ -1,16 +1,14 @@
 import { Card } from "./types";
 import { shuffle, makePlayerCards } from "./helpers";
 
-let nextPlayerId = 0;
-
 export class Player {
   id: number;
   deck: Card[];
   usedCards: Card[] = [];
   out: boolean = false;
 
-  constructor(cards: Card[]) {
-    this.id = nextPlayerId++;
+  constructor(id: number, cards: Card[]) {
+    this.id = id;
     this.deck = makePlayerCards(cards, this.id);
   }
 

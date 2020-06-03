@@ -23,6 +23,7 @@ function BasicWarRule() {
         cardPot.push(...warringCards);
         winners = BasicWarShowdown2(warringCards);
         if (winners.length > 1) {
+            this.stats.incrementWars();
             const moreCards = this.activePlayers.reduce((pot, player) => {
                 const nextThree = player.getThree().map((card) => new PlayerCard_1.PlayerCard(card, player.id));
                 pot.push(...nextThree);
@@ -30,14 +31,16 @@ function BasicWarRule() {
             }, []);
             cardPot.push(...moreCards);
         }
+        else {
+            this.stats.incrementPlayerWin(winners[0].playerId);
+        }
         if (winners.length < 1) {
             console.error("Something went wrong in Basic War");
         }
     }
     cardPot.forEach((card) => card.reassignTo(winners[0].playerId));
     const winningPlayer = this.activePlayers.find((player) => player.id === winners[0].playerId);
-    console.info("BasicWarRule: This Round's Winning Player:", winningPlayer === null || winningPlayer === void 0 ? void 0 : winningPlayer.id);
-    winningPlayer === null || winningPlayer === void 0 ? void 0 : winningPlayer.usedCards.push(...cardPot);
+    winningPlayer && winningPlayer.usedCards.push(...cardPot);
 }
 exports.BasicWarRule = BasicWarRule;
 const BasicWarShowdown2 = (showdownCards) => {

@@ -1,4 +1,4 @@
-import { Game, stats } from "./declare-war";
+import { Game } from "./declare-war";
 import { Player } from "./Player";
 import { PlayerCard } from "./PlayerCard";
 
@@ -29,7 +29,7 @@ export function BasicWarRule(this: Game) {
     winners = BasicWarShowdown2(warringCards);
 
     if (winners.length > 1) {
-      stats.incrementWars();
+      this.stats.incrementWars();
       const moreCards = this.activePlayers.reduce((pot, player) => {
         const nextThree: PlayerCard[] = player.getThree().map((card) => new PlayerCard(card, player.id));
         pot.push(...nextThree);
@@ -37,7 +37,7 @@ export function BasicWarRule(this: Game) {
       }, [] as PlayerCard[]);
       cardPot.push(...moreCards);
     } else {
-      stats.incrementPlayerWin(winners[0].playerId);
+      this.stats.incrementPlayerWin(winners[0].playerId);
     }
 
     if (winners.length < 1) {
@@ -48,7 +48,7 @@ export function BasicWarRule(this: Game) {
   cardPot.forEach((card) => card.reassignTo(winners[0].playerId));
 
   const winningPlayer = this.activePlayers.find((player) => player.id === winners[0].playerId);
-  winningPlayer?.usedCards.push(...cardPot);
+  winningPlayer && winningPlayer.usedCards.push(...cardPot);
 }
 
 const BasicWarShowdown2 = (showdownCards: PlayerCard[]) => {

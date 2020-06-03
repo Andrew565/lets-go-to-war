@@ -2,12 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Player = void 0;
 const helpers_1 = require("./helpers");
-let nextPlayerId = 0;
 class Player {
-    constructor(cards) {
+    constructor(id, cards) {
         this.usedCards = [];
         this.out = false;
-        this.id = nextPlayerId++;
+        this.id = id;
         this.deck = helpers_1.makePlayerCards(cards, this.id);
     }
     get nextCard() {

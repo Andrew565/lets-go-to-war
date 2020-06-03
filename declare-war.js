@@ -4,8 +4,9 @@ exports.Game = void 0;
 const Player_1 = require("./Player");
 const helpers_1 = require("./helpers");
 const Rules_1 = require("./Rules");
+const StatisticsObject_1 = require("./StatisticsObject");
 class Game {
-    constructor(rule, numPlayers) {
+    constructor(rule, numPlayers, stats) {
         this.players = [];
         this.gameOver = false;
         this.round = 1;
@@ -20,24 +21,33 @@ class Game {
         this.deck = helpers_1.make52();
         for (var num = 0; num < numPlayers; num++) {
             const cards = this.deck.splice(0, Math.ceil(52 / numPlayers));
-            this.players.push(new Player_1.Player(cards));
+            this.players.push(new Player_1.Player(num, cards));
         }
         this.rule = rule.bind(this);
+        this.stats = stats;
     }
     get activePlayers() {
         return this.players.filter((player) => player.totalCards > 0);
     }
     goToWar() {
         while (!this.gameOver) {
+            this.stats.incrementTurns();
             this.rule();
             this.gameOver = this.checkForWinner();
         }
         if (this.winningId) {
-            console.info("The winner is: #", this.players[this.winningId].id);
-            console.log("Players remaining cards: ", this.players[this.winningId].totalCards);
+            this.stats.finalWinner = this.winningId;
         }
     }
 }
 exports.Game = Game;
-const game = new Game(Rules_1.BasicWarRule, 2);
-game.goToWar();
+const numberOfGames = 3;
+const HallOfStatistics = [];
+for (let gameNumber = 1; gameNumber < numberOfGames + 1; gameNumber++) {
+    const numberOfPlayers = 2;
+    const stats = new StatisticsObject_1.StatisticsObject(numberOfPlayers, gameNumber);
+    const game = new Game(Rules_1.BasicWarRule, numberOfPlayers, stats);
+    game.goToWar();
+    HallOfStatistics.push(stats);
+}
+console.dir(HallOfStatistics);

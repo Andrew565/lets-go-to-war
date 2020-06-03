@@ -1,4 +1,4 @@
-import { Game } from "./declare-war";
+import { Game, stats } from "./declare-war";
 import { Player } from "./Player";
 import { PlayerCard } from "./PlayerCard";
 
@@ -29,12 +29,15 @@ export function BasicWarRule(this: Game) {
     winners = BasicWarShowdown2(warringCards);
 
     if (winners.length > 1) {
+      stats.incrementWars();
       const moreCards = this.activePlayers.reduce((pot, player) => {
         const nextThree: PlayerCard[] = player.getThree().map((card) => new PlayerCard(card, player.id));
         pot.push(...nextThree);
         return pot;
       }, [] as PlayerCard[]);
       cardPot.push(...moreCards);
+    } else {
+      stats.incrementPlayerWin(winners[0].playerId);
     }
 
     if (winners.length < 1) {
@@ -45,7 +48,6 @@ export function BasicWarRule(this: Game) {
   cardPot.forEach((card) => card.reassignTo(winners[0].playerId));
 
   const winningPlayer = this.activePlayers.find((player) => player.id === winners[0].playerId);
-  console.info("BasicWarRule: This Round's Winning Player:", winningPlayer?.id);
   winningPlayer?.usedCards.push(...cardPot);
 }
 

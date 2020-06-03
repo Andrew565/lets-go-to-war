@@ -1,7 +1,8 @@
-import { Rule, Card, StatisticsObject } from "./types";
+import { Rule, Card } from "./types";
 import { Player } from "./Player";
 import { make52 } from "./helpers";
 import { BasicWarRule } from "./Rules";
+import { StatisticsObject } from "./StatisticsObject";
 
 export class Game {
   deck: Card[];
@@ -10,11 +11,6 @@ export class Game {
   gameOver: boolean = false;
   round: number = 1;
   winningId: number | undefined = undefined;
-  stats: StatisticsObject = {
-    turns: 0,
-    numberOfWars: 0,
-    warsWonByPlayer: [],
-  };
 
   constructor(rule: Rule, numPlayers: number) {
     this.deck = make52();
@@ -41,7 +37,7 @@ export class Game {
 
   goToWar() {
     while (!this.gameOver) {
-      this.stats.turns++;
+      stats.turns++;
       this.rule();
       this.gameOver = this.checkForWinner();
     }
@@ -51,8 +47,14 @@ export class Game {
 
       console.log("Player's remaining cards: ", this.players[this.winningId].totalCards);
     }
+
+    console.dir(stats);
   }
 }
 
-const game = new Game(BasicWarRule, 2);
+const numberOfPlayers = 2;
+
+export const stats = new StatisticsObject(numberOfPlayers);
+
+const game = new Game(BasicWarRule, numberOfPlayers);
 game.goToWar();

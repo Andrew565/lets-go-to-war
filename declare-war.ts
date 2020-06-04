@@ -52,11 +52,10 @@ export class Game {
 }
 
 const numberOfGames = 3;
+const numberOfPlayers = 2;
 const HallOfStatistics: StatisticsObject[] = [];
 
 for (let gameNumber = 1; gameNumber < numberOfGames + 1; gameNumber++) {
-  const numberOfPlayers = 2;
-
   const stats = new StatisticsObject(numberOfPlayers, gameNumber);
 
   const game = new Game(BasicWarRule, numberOfPlayers, stats);

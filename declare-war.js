@@ -5,6 +5,7 @@ const Player_1 = require("./Player");
 const helpers_1 = require("./helpers");
 const Rules_1 = require("./Rules");
 const StatisticsObject_1 = require("./StatisticsObject");
+const parseStatistics_1 = require("./parseStatistics");
 class Game {
     constructor(rule, numPlayers, stats) {
         this.players = [];
@@ -42,12 +43,12 @@ class Game {
 }
 exports.Game = Game;
 const numberOfGames = 3;
+const numberOfPlayers = 2;
 const HallOfStatistics = [];
 for (let gameNumber = 1; gameNumber < numberOfGames + 1; gameNumber++) {
-    const numberOfPlayers = 2;
     const stats = new StatisticsObject_1.StatisticsObject(numberOfPlayers, gameNumber);
     const game = new Game(Rules_1.BasicWarRule, numberOfPlayers, stats);
     game.goToWar();
     HallOfStatistics.push(stats);
 }
-console.dir(HallOfStatistics);
+parseStatistics_1.parseStats(HallOfStatistics);

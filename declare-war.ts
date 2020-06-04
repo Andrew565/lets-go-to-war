@@ -52,11 +52,12 @@ export class Game {
 }
 
 const numberOfGames = 1000;
-const numberOfPlayers = 2;
-const HallOfStatistics: StatisticsObject[] = [];
+const numberOfPlayers = 3;
 const gameRules = [BasicWarRule, SpiritWarRule];
 
 gameRules.forEach((gameRule) => {
+  const HallOfStatistics: StatisticsObject[] = [];
+
   for (let gameNumber = 1; gameNumber < numberOfGames + 1; gameNumber++) {
     const stats = new StatisticsObject(numberOfPlayers, gameNumber);
 

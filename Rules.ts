@@ -97,16 +97,16 @@ export function SpiritWarRule(this: Game) {
   winningPlayer && winningPlayer.usedCards.push(...cardPot);
 }
 
-/**
- * Spirit War Trump Mappings:
- *
- * Hearts (Love) --beats--> Spades (Death)
- * Spades (Death) --> Diamonds (Wealth)
- * Diamonds (Wealth) --> Clubs (Labor)
- * Clubs (Labor) --> Hearts (Love)
- */
-
 const trumpCards: { [x: string]: Suit } = {
+  /**
+   * Spirit War Trump Mappings:
+   *
+   * Hearts (Love) --beats--> Spades (Death)
+   * Spades (Death) --> Diamonds (Wealth)
+   * Diamonds (Wealth) --> Clubs (Labor)
+   * Clubs (Labor) --> Hearts (Love)
+   */
+
   Hearts: "Spades",
   Spades: "Diamonds",
   Diamonds: "Clubs",
@@ -119,13 +119,29 @@ const cardRankDistance = 2;
 export function SpiritWarShowdown(showdownCards: PlayerCard[]) {
   let winners: PlayerCard[] = [];
   showdownCards.sort((a, b) => a.rank - b.rank);
+  winners.push(showdownCards[0]);
 
-  showdownCards.forEach((card, i, cards) => {
-    const nextCard = cards[i + 1];
-    if (!nextCard || card.rank + cardRankDistance < nextCard.rank) return;
+  showdownCards.forEach((card) => {
+    if (card.rank > winners[0].rank + cardRankDistance) {
+      winners = [card];
+    } else if (card.rank >= winners[0].rank - cardRankDistance) {
+      winners = checkForTrump(card, winners);
+    }
+  });
 
-    if (card.rank > nextCard.rank)
-  })
+  return winners;
+}
+
+export function checkForTrump(card: PlayerCard, winners: PlayerCard[]) {
+  const highCard = winners.reduce((highCard, card) => {
+    if (card.rank > highCard.rank && highCard.suit !== trumpCards[card.suit]) {
+      return card;
+    }
+
+    // TODO: Check for low `card.rank` to meet or beat `highCard.rank`
+
+    return highCard;
+  }, winners[0]);
 
   return winners;
 }

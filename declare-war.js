@@ -28,7 +28,7 @@ class Game {
         this.stats = stats;
     }
     get activePlayers() {
-        return this.players.filter((player) => player.totalCards > 0);
+        return this.players.filter((player) => !player.out);
     }
     goToWar() {
         while (!this.gameOver) {

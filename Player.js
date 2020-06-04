@@ -10,7 +10,10 @@ class Player {
         this.deck = helpers_1.makePlayerCards(cards, this.id);
     }
     get nextCard() {
-        return this.deck.length > 0 ? this.deck.shift() : this.shuffleCards();
+        console.log("nextCard called for player #", this.id);
+        const retVal = this.deck.length > 0 ? this.deck.shift() : this.shuffleCards();
+        console.log("retVal:", retVal);
+        return retVal;
     }
     getThree() {
         const retVal = [];
@@ -25,7 +28,7 @@ class Player {
         if (this.usedCards.length === 0)
             return undefined;
         const nextCard = helpers_1.shuffle(this.usedCards).shift();
-        this.deck = this.usedCards;
+        this.deck = [...this.usedCards];
         this.usedCards = [];
         return nextCard;
     }

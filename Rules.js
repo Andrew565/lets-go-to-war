@@ -4,6 +4,8 @@ exports.checkForTrump = exports.SpiritWarShowdown = exports.SpiritWarRule = expo
 const PlayerCard_1 = require("./PlayerCard");
 function getWarCards(activePlayers) {
     return activePlayers.reduce((pot, player) => {
+        if (player.out)
+            return pot;
         const card = player.nextCard;
         if (card) {
             pot.push(new PlayerCard_1.PlayerCard(card, player.id));
@@ -63,8 +65,10 @@ function SpiritWarRule() {
     let winners = [];
     while (winners.length !== 1) {
         const warringCards = getWarCards(activePlayers);
+        console.log("warringCards:", warringCards);
         cardPot.push(...warringCards);
         winners = SpiritWarShowdown(warringCards);
+        console.log("Spirit war winners:", winners);
         if (winners.length > 1) {
             this.stats.incrementWars();
             const moreCards = this.activePlayers.reduce((pot, player) => {

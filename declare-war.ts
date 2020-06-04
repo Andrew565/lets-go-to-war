@@ -27,7 +27,7 @@ export class Game {
   }
 
   get activePlayers(): Player[] {
-    return this.players.filter((player) => player.totalCards > 0);
+    return this.players.filter((player) => !player.out);
   }
 
   checkForWinner = (): boolean => {

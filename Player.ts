@@ -13,7 +13,10 @@ export class Player {
   }
 
   get nextCard(): Card | undefined {
-    return this.deck.length > 0 ? this.deck.shift() : this.shuffleCards();
+    console.log("nextCard called for player #", this.id);
+    const retVal = this.deck.length > 0 ? this.deck.shift() : this.shuffleCards();
+    console.log("retVal:", retVal);
+    return retVal;
   }
 
   getThree(): Card[] {
@@ -28,7 +31,7 @@ export class Player {
   shuffleCards(): Card | undefined {
     if (this.usedCards.length === 0) return undefined;
     const nextCard = shuffle(this.usedCards).shift();
-    this.deck = this.usedCards;
+    this.deck = [...this.usedCards];
     this.usedCards = [];
     return nextCard;
   }

@@ -5,6 +5,8 @@ import { Suit } from "./types";
 
 function getWarCards(activePlayers: Player[]) {
   return activePlayers.reduce((pot, player) => {
+    if (player.out) return pot;
+
     const card = player.nextCard;
 
     if (card) {
@@ -75,8 +77,11 @@ export function SpiritWarRule(this: Game) {
 
   while (winners.length !== 1) {
     const warringCards = getWarCards(activePlayers);
+    console.log("warringCards:", warringCards);
+
     cardPot.push(...warringCards);
     winners = SpiritWarShowdown(warringCards);
+    console.log("Spirit war winners:", winners);
 
     if (winners.length > 1) {
       this.stats.incrementWars();

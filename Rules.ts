@@ -146,18 +146,29 @@ class TrumpChecker {
   }
 
   cardBeats() {
-    const cardRankHighEnough = card.rank > highCard.rank;
-    const highCardCanNotTrump = highCard.suit !== trumpCards[card.suit];
+    const cardRankHighEnough = this.card.rank > this.highCard.rank;
+    const highCardCanNotTrump = this.highCard.suit !== trumpCards[this.card.suit];
     return cardRankHighEnough && highCardCanNotTrump;
   }
 
   cardCanTrump() {
-    const
+    const cardIsTrumpCard = trumpCards[this.highCard.suit] === this.card.suit;
+    const cardIsWithinRank = this.card.rank >= this.highCard.rank - cardRankDistance;
+
+    return cardIsTrumpCard && cardIsWithinRank;
+  }
+
+  cardTrumps() {
+    return this.cardBeats() && this.cardCanTrump();
   }
 }
 
 export function checkForTrump(card: PlayerCard, winners: PlayerCard[]) {
-  const trumpChecker = new TrumpChecker(card, highCard)
+  const trumpChecker = new TrumpChecker(card, winners[0]);
+
+  if (trumpChecker.cardWins()) {
+    winners.push(card);
+  }
 
   return winners;
 }

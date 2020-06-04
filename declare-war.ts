@@ -51,8 +51,8 @@ export class Game {
   }
 }
 
-const numberOfGames = 3;
-const numberOfPlayers = 2;
+const numberOfGames = 1000;
+const numberOfPlayers = 3;
 const HallOfStatistics: StatisticsObject[] = [];
 
 for (let gameNumber = 1; gameNumber < numberOfGames + 1; gameNumber++) {

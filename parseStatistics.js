@@ -16,13 +16,19 @@ exports.parseStats = (HallOfStatistics) => {
     console.log("averageNumberOfWars:", averageNumberOfWars);
     const numberOfPlayers = HallOfStatistics[0].warsWonByPlayer.length;
     const totalWarsWonByPlayer = HallOfStatistics.reduce((acc, stat) => {
-        stat.warsWonByPlayer.forEach((playerWin, i) => (acc[i] += playerWin.wins));
+        stat.warsWonByPlayer.forEach((playerWin) => {
+            if (!acc[playerWin.playerId])
+                acc[playerWin.playerId] = 0;
+            acc[playerWin.playerId] += playerWin.wins;
+        });
         return acc;
     }, []);
     const averageWarsWonByPlayer = totalWarsWonByPlayer.map((wins) => wins / numberOfPlayers);
     console.log("averageWarsWonByPlayer:", averageWarsWonByPlayer);
     const timesPlayerWon = HallOfStatistics.reduce((acc, stat) => {
-        acc[stat.finalWinner] += 1;
+        if (!acc[stat.finalWinner])
+            acc[stat.finalWinner] = 0;
+        acc[stat.finalWinner]++;
         return acc;
     }, []);
     console.log("timesPlayerWon", timesPlayerWon);

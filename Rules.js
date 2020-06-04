@@ -82,8 +82,11 @@ function SpiritWarRule() {
             this.stats.incrementPlayerWin(winners[0].playerId);
         }
     }
+    console.log("cardPot before assignment", cardPot);
     cardPot.forEach((card) => card.reassignTo(winners[0].playerId));
+    console.log("cardPot after assignment", cardPot);
     const winningPlayer = this.activePlayers.find((player) => player.id === winners[0].playerId);
+    console.log("winningPlayer, used cards length:", winningPlayer, winningPlayer ? winningPlayer.usedCards.length : 0);
     winningPlayer && winningPlayer.usedCards.push(...cardPot);
 }
 exports.SpiritWarRule = SpiritWarRule;

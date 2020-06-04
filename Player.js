@@ -11,6 +11,7 @@ class Player {
     }
     get nextCard() {
         console.log("nextCard called for player #", this.id);
+        console.log("player's deck and usedCards length", this.deck.length, this.usedCards.length);
         const retVal = this.deck.length > 0 ? this.deck.shift() : this.shuffleCards();
         console.log("retVal:", retVal);
         return retVal;

@@ -132,16 +132,32 @@ export function SpiritWarShowdown(showdownCards: PlayerCard[]) {
   return winners;
 }
 
+class TrumpChecker {
+  card: PlayerCard;
+  highCard: PlayerCard;
+
+  constructor(card: PlayerCard, highCard: PlayerCard) {
+    this.card = card;
+    this.highCard = highCard;
+  }
+
+  cardWins() {
+    return this.cardBeats() || this.cardTrumps();
+  }
+
+  cardBeats() {
+    const cardRankHighEnough = card.rank > highCard.rank;
+    const highCardCanNotTrump = highCard.suit !== trumpCards[card.suit];
+    return cardRankHighEnough && highCardCanNotTrump;
+  }
+
+  cardCanTrump() {
+    const
+  }
+}
+
 export function checkForTrump(card: PlayerCard, winners: PlayerCard[]) {
-  const highCard = winners.reduce((highCard, card) => {
-    if (card.rank > highCard.rank && highCard.suit !== trumpCards[card.suit]) {
-      return card;
-    }
-
-    // TODO: Check for low `card.rank` to meet or beat `highCard.rank`
-
-    return highCard;
-  }, winners[0]);
+  const trumpChecker = new TrumpChecker(card, highCard)
 
   return winners;
 }

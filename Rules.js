@@ -107,6 +107,7 @@ const trumpCards = {
 // How close does the trump card's rank need to be to trigger a war
 const cardRankDistance = 2;
 function SpiritWarShowdown(showdownCards) {
+    console.log("SpiritWarShowdown called with", showdownCards);
     let winners = [];
     showdownCards.sort((a, b) => a.rank - b.rank);
     winners.push(showdownCards[0]);

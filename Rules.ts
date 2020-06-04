@@ -125,6 +125,7 @@ const trumpCards: { [x: string]: Suit } = {
 const cardRankDistance = 2;
 
 export function SpiritWarShowdown(showdownCards: PlayerCard[]) {
+  console.log("SpiritWarShowdown called with", showdownCards);
   let winners: PlayerCard[] = [];
   showdownCards.sort((a, b) => a.rank - b.rank);
   winners.push(showdownCards[0]);

@@ -1,7 +1,7 @@
 import { Rule, Card } from "./types";
 import { Player } from "./Player";
 import { make52 } from "./helpers";
-import { BasicWarRule } from "./Rules";
+import { BasicWarRule, SpiritWarRule } from "./Rules";
 import { StatisticsObject } from "./StatisticsObject";
 import { parseStats } from "./parseStatistics";
 
@@ -52,15 +52,18 @@ export class Game {
 }
 
 const numberOfGames = 1000;
-const numberOfPlayers = 3;
+const numberOfPlayers = 2;
 const HallOfStatistics: StatisticsObject[] = [];
+const gameRules = [BasicWarRule, SpiritWarRule];
 
-for (let gameNumber = 1; gameNumber < numberOfGames + 1; gameNumber++) {
-  const stats = new StatisticsObject(numberOfPlayers, gameNumber);
+gameRules.forEach((gameRule) => {
+  for (let gameNumber = 1; gameNumber < numberOfGames + 1; gameNumber++) {
+    const stats = new StatisticsObject(numberOfPlayers, gameNumber);
 
-  const game = new Game(BasicWarRule, numberOfPlayers, stats);
-  game.goToWar();
-  HallOfStatistics.push(stats);
-}
+    const game = new Game(gameRule, numberOfPlayers, stats);
+    game.goToWar();
+    HallOfStatistics.push(stats);
+  }
 
-parseStats(HallOfStatistics);
+  parseStats(HallOfStatistics);
+});

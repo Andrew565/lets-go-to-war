@@ -42,12 +42,14 @@ class Game {
     }
 }
 exports.Game = Game;
-const numberOfGames = 1000;
-const numberOfPlayers = 3;
+const numberOfGames = 3;
+const numberOfPlayers = 2;
 const HallOfStatistics = [];
+// const gameRule = BasicWarRule;
+const gameRule = Rules_1.SpiritWarRule;
 for (let gameNumber = 1; gameNumber < numberOfGames + 1; gameNumber++) {
     const stats = new StatisticsObject_1.StatisticsObject(numberOfPlayers, gameNumber);
-    const game = new Game(Rules_1.BasicWarRule, numberOfPlayers, stats);
+    const game = new Game(gameRule, numberOfPlayers, stats);
     game.goToWar();
     HallOfStatistics.push(stats);
 }

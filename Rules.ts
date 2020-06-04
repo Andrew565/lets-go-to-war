@@ -159,16 +159,14 @@ class TrumpChecker {
   }
 
   cardTrumps() {
-    return this.cardBeats() && this.cardCanTrump();
+    return this.cardBeats() || this.cardCanTrump();
   }
 }
 
 export function checkForTrump(card: PlayerCard, winners: PlayerCard[]) {
   const trumpChecker = new TrumpChecker(card, winners[0]);
 
-  if (trumpChecker.cardWins()) {
-    winners.push(card);
-  }
+  if (trumpChecker.cardWins()) winners.push(card);
 
   return winners;
 }
